@@ -1,0 +1,43 @@
+Defuault parameters:
+    Mode: 2-players
+    Ball count: 1
+    Ball speed: 5
+    Paddle speed: 7
+    Target game score: 10
+
+Customization options (terminal):
+    Player count selection (1-player, 1 AI / 2-players / full AI)
+    Player side selection (1-player)
+    Player name selection
+    Ball count selection (1-5)
+    Ball speed selection (1-9)
+    Paddle speed selection (1-15)
+    Setting target game score (1-100)
+    Party mode with defaults (seizure warning)
+
+Additional Features:
+    Ball movement (start) upon key press
+    Random ball spawn locations along Y-axis at the center of X-axis
+    Random ball movement direction upon start/reset after score
+    Sounds:
+        BGM
+        On wall collision
+        On paddle and ball collision
+        On miss
+    Colour changes on hit:
+        BLACK 
+        WHITE 
+        BLUE 
+        PURPLE 
+        RED 
+        TEAL 
+        GREEN 
+        YELLOW
+        BROWN
+
+AI breakdown:
+    Single ball is always followed by paddle movement
+    In the case of multiple balls, checks ball direction
+    Only moves if ball direction is towards paddle
+    Compares x coordinate of ball center when multiple balls share correct directionality and moves to intercept closest ball along X-axis
+    If the above is true, compares Y coordinate of the ball centers to the paddle center and moves to intercept closest ball along Y-axis 
