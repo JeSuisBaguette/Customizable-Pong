@@ -628,9 +628,5 @@ def collision(rect1, rect2):
     return collision
 
 
-def benisgay():
-    return True
-
-
 if __name__ == "__main__":
     main()
