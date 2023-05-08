@@ -211,8 +211,9 @@ def main():
         # AI control (extra check to ensure no players are active).
         if config.ai == True and config.player_active_right == False:
             filter_right = ball_direction_filter(list, right_side=True)
+            # Provides the closest ball to the paddle
             target_right = nearest_ball(right_paddle, filter_right)
-            # It is possible for the find() to return None if filter provides a list with no elements. No movement in that case. 
+            # It is possible for the filter to return None if filter provides a list with no elements. No movement in that case.
             if target_right != None:
                 if right_ai(right_paddle, target_right):
                     right_paddle.move_up()
@@ -498,8 +499,8 @@ def get_filepath(file):
     return filePath
 
 
-# Filters direction of the balls moving towards the right or left (set on function call) and appends them in a list. Returned list can be empty      
-def ball_direction_filter(list, right_side = False, left_side= False):
+# Filters direction of the balls moving towards the right or left (set on function call) and appends them in a list. Returned list can be empty
+def ball_direction_filter(list, right_side=False, left_side=False):
     direction = []
     if right_side == True:
         for ball in list:
@@ -510,7 +511,7 @@ def ball_direction_filter(list, right_side = False, left_side= False):
         for ball in list:
             if ball.x_speed < 0:
                 direction.append(ball)
-        return direction       
+        return direction
 
 
 # Selects the best ball from the filtered list and returns it. Returns None if the list it gets is empty
@@ -518,26 +519,28 @@ def nearest_ball(paddle, list):
     if len(list) > 0:
         target_ball = list[0]
         for ball in list:
-            if distance_to(paddle, ball) < distance_to(paddle, target_ball): 
+            if distance_to(paddle, ball) < distance_to(paddle, target_ball):
                 target_ball = ball
         return target_ball
 
 
 # Calculates the distance from the center of the paddle to the center of the ball
 def distance_to(rect1, rect2):
-    distance = math.sqrt(((rect1.centerx - rect2.centerx)**2) + (rect1.centery - rect2.centery)**2)
+    distance = math.sqrt(
+        ((rect1.centerx - rect2.centerx) ** 2) + (rect1.centery - rect2.centery) ** 2
+    )
     return distance
 
 
-# Compares best ball to right paddle position and returns a boolean which is evaluated for movement. 
-def right_ai(paddle, ball): 
+# Compares best ball to right paddle position and returns a boolean which is evaluated for movement.
+def right_ai(paddle, ball):
     if paddle.centery > ball.centery:
         return True
     else:
         return False
-        
-        
-# Compares best ball to left paddle position and returns a boolean which is evaluated for movement. 
+
+
+# Compares best ball to left paddle position and returns a boolean which is evaluated for movement.
 def left_ai(paddle, ball):
     if paddle.centery > ball.centery:
         return True
