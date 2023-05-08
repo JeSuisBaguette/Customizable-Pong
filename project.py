@@ -4,6 +4,7 @@ import sys
 import random
 import re
 import os
+import math
 
 
 # Paddle class with methods: paddle objects, drawing, y-axis movement.
@@ -209,16 +210,23 @@ def main():
 
         # AI control (extra check to ensure no players are active).
         if config.ai == True and config.player_active_right == False:
-            if right_ai(right_paddle, list):
-                right_paddle.move_up()
-            # False is explicitly stated so as to not move upon None/Continue returns
-            elif right_ai(right_paddle, list) == False:
-                right_paddle.move_down()
+            filter_right = ball_direction_filter(list, right_side=True)
+            target_right = nearest_ball(right_paddle, filter_right)
+            # It is possible for the find() to return None if filter provides a list with no elements. No movement in that case. 
+            if target_right != None:
+                if right_ai(right_paddle, target_right):
+                    right_paddle.move_up()
+                # False is explicitly stated so as to not move upon None/Continue returns
+                elif right_ai(right_paddle, target_right) == False:
+                    right_paddle.move_down()
         if config.ai == True and config.player_active_left == False:
-            if left_ai(left_paddle, list):
-                left_paddle.move_up()
-            elif left_ai(left_paddle, list) == False:
-                left_paddle.move_down()
+            filter_left = ball_direction_filter(list, left_side=True)
+            target_left = nearest_ball(left_paddle, filter_left)
+            if target_left != None:
+                if left_ai(left_paddle, target_left):
+                    left_paddle.move_up()
+                elif left_ai(left_paddle, target_left) == False:
+                    left_paddle.move_down()
 
         # Paddle and ball collisions
         for ball in list:
@@ -490,136 +498,50 @@ def get_filepath(file):
     return filePath
 
 
-# AI for the right paddle
-def right_ai(paddle, balls):
-    # In case of one ball, the AI will always follow the ball's center with paddle center no matter where it is on screen.
-    if len(balls) == 1:
-        for ball in balls:
-            if paddle.centery > ball.centery:
-                return True
-            else:
-                return False
-    # In case of multiple balls.
+# Filters direction of the balls moving towards the right and appends them in a list. Returned list can be empty      
+def ball_direction_filter(list, right_side = False, left_side= False):
+    direction = []
+    if right_side == True:
+        for ball in list:
+            if ball.x_speed > 0:
+                direction.append(ball)
+        return direction
+    elif left_side == True:
+        for ball in list:
+            if ball.x_speed < 0:
+                direction.append(ball)
+        return direction       
+
+
+# Selects the best ball from the filtered list and returns it. Returns None if the list it gets is empty
+def nearest_ball(paddle, list):
+    if len(list) > 0:
+        target_ball = list[0]
+        for ball in list:
+            if distance_to(paddle, ball) < distance_to(paddle, target_ball): 
+                target_ball = ball
+        return target_ball
+
+
+def distance_to(rect1, rect2):
+    distance = math.sqrt(((rect1.centerx - rect2.centerx)**2) + (rect1.centery - rect2.centery)**2)
+    return distance
+
+
+# Compares best ball to paddle position and returns a boolean which is evaluated for movement. 
+def right_ai(paddle, ball): 
+    if paddle.centery > ball.centery:
+        return True
     else:
-        # Comparison between two items at once so one less loop than the amount of items i.e. 3 items takes 2 loops to evaluate.
-        for ball in range(len(balls) - 1):
-            # Checks the direction towards which the ball is moving. Positive when moving right.
-            if balls[ball].x_speed > 0 and balls[ball + 1].x_speed > 0:
-                # If both have same direction, ball with closer x coor value get's locked on to. Greater is closer.
-                if balls[ball].x > balls[ball + 1].x:
-                    if paddle.centery > balls[ball].centery:
-                        return True
-                    else:
-                        return False
-                if balls[ball].x < balls[ball + 1].x:
-                    if paddle.centery > balls[ball + 1].centery:
-                        return True
-                    else:
-                        return False
-                # In case of same x coor for both balls, closest distance of ball center to paddle center is evaluated.
-                if balls[ball].x == balls[ball + 1].x:
-                    # A greater y difference means closest to paddle.
-                    if (
-                        paddle.centery - balls[ball].centery
-                        > paddle.centery - balls[ball + 1].centery
-                    ):
-                        if paddle.centery > balls[ball + 1].centery:
-                            return True
-                        else:
-                            return False
-                    if (
-                        paddle.centery - balls[ball].centery
-                        < paddle.centery - balls[ball + 1].centery
-                    ):
-                        if paddle.centery > balls[ball].centery:
-                            return True
-                        else:
-                            return False
-                    # Any other conditions continue the loop instead of returning True/False. Needed explicitly.
-                    else:
-                        continue
-                else:
-                    continue
-            # In case only one ball is moving towards the paddle.
-            if balls[ball].x_speed > 0 and balls[ball + 1].x_speed < 0:
-                if paddle.centery > balls[ball].centery:
-                    return True
-                else:
-                    return False
-            if balls[ball].x_speed < 0 and balls[ball + 1].x_speed > 0:
-                if paddle.centery > balls[ball + 1].centery:
-                    return True
-                else:
-                    return False
-            # Continue here ensures that if no balls are moving towards the paddle, it remains stationary instead of returning False.
-            else:
-                continue
-
-
+        return False
+        
+        
 # AI for left paddle.
-def left_ai(paddle, balls):
-    # In case of one ball, the AI will always follow the ball's center with paddle center no matter where it is on screen.
-    if len(balls) == 1:
-        for ball in balls:
-            if paddle.centery > ball.centery:
-                return True
-            else:
-                return False
-    # In case of multiple balls.
+def left_ai(paddle, ball):
+    if paddle.centery > ball.centery:
+        return True
     else:
-        # Comparison between two items at once so one less loop than the amount of items i.e. 3 items takes 2 loops to evaluate.
-        for ball in range(len(balls) - 1):
-            # Checks the direction towards which the ball is moving. Negative when moving left.
-            if balls[ball].x_speed < 0 and balls[ball + 1].x_speed < 0:
-                # If both have same direction, ball with closer x coor value get's locked on to. Less is closer.
-                if balls[ball].x < balls[ball + 1].x:
-                    if paddle.centery > balls[ball].centery:
-                        return True
-                    else:
-                        return False
-                if balls[ball].x > balls[ball + 1].x:
-                    if paddle.centery > balls[ball + 1].centery:
-                        return True
-                    else:
-                        return False
-                # In case of same x coor for both balls, closest distance of ball center to paddle center is evaluated.
-                if balls[ball].x == balls[ball + 1].x:
-                    # A lower y difference to paddle center means closest to paddle.
-                    if (
-                        paddle.centery - balls[ball].centery
-                        < paddle.centery - balls[ball + 1].centery
-                    ):
-                        if paddle.centery > balls[ball + 1].centery:
-                            return True
-                        else:
-                            return False
-                    if (
-                        paddle.centery - balls[ball].centery
-                        > paddle.centery - balls[ball + 1].centery
-                    ):
-                        if paddle.centery > balls[ball].centery:
-                            return True
-                        else:
-                            return False
-                    # Any other conditions continue the loop instead of returning True/False. Needed explicitly.
-                    else:
-                        continue
-                else:
-                    continue
-            # In case only one ball is moving towards the paddle.
-            if balls[ball].x_speed < 0 and balls[ball + 1].x_speed > 0:
-                if paddle.centery > balls[ball].centery:
-                    return True
-                else:
-                    return False
-            if balls[ball].x_speed > 0 and balls[ball + 1].x_speed < 0:
-                if paddle.centery > balls[ball + 1].centery:
-                    return True
-                else:
-                    return False
-            # Continue here ensures that if no balls are moving towards the paddle, it remains stationary instead of returning False.
-            else:
-                continue
+        return False
 
 
 # Uses pygame's rect class and it's inbuilt class method of colliderect. Checks if two rectangles overlap.
