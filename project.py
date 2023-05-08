@@ -498,7 +498,7 @@ def get_filepath(file):
     return filePath
 
 
-# Filters direction of the balls moving towards the right and appends them in a list. Returned list can be empty      
+# Filters direction of the balls moving towards the right or left (set on function call) and appends them in a list. Returned list can be empty      
 def ball_direction_filter(list, right_side = False, left_side= False):
     direction = []
     if right_side == True:
@@ -523,12 +523,13 @@ def nearest_ball(paddle, list):
         return target_ball
 
 
+# Calculates the distance from the center of the paddle to the center of the ball
 def distance_to(rect1, rect2):
     distance = math.sqrt(((rect1.centerx - rect2.centerx)**2) + (rect1.centery - rect2.centery)**2)
     return distance
 
 
-# Compares best ball to paddle position and returns a boolean which is evaluated for movement. 
+# Compares best ball to right paddle position and returns a boolean which is evaluated for movement. 
 def right_ai(paddle, ball): 
     if paddle.centery > ball.centery:
         return True
@@ -536,7 +537,7 @@ def right_ai(paddle, ball):
         return False
         
         
-# AI for left paddle.
+# Compares best ball to left paddle position and returns a boolean which is evaluated for movement. 
 def left_ai(paddle, ball):
     if paddle.centery > ball.centery:
         return True
