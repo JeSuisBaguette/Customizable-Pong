@@ -1,4 +1,4 @@
-# Imports needed. Game engine, sys exit, ball/color randomness, input validation, filepath for assets.
+# Imports needed. Game engine, sys exit, ball/color randomness, input validation, filepath for assets, math for distance calculation
 import pygame
 import sys
 import random
