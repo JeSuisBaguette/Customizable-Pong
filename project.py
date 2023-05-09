@@ -215,18 +215,18 @@ def main():
             target_right = nearest_ball(right_paddle, filter_right)
             # It is possible for the filter to return None if filter provides a list with no elements. No movement in that case.
             if target_right != None:
-                if right_ai(right_paddle, target_right):
+                if ai(right_paddle, target_right):
                     right_paddle.move_up()
                 # False is explicitly stated so as to not move upon None/Continue returns
-                elif right_ai(right_paddle, target_right) == False:
+                elif ai(right_paddle, target_right) == False:
                     right_paddle.move_down()
         if config.ai == True and config.player_active_left == False:
             filter_left = ball_direction_filter(list, left_side=True)
             target_left = nearest_ball(left_paddle, filter_left)
             if target_left != None:
-                if left_ai(left_paddle, target_left):
+                if ai(left_paddle, target_left):
                     left_paddle.move_up()
-                elif left_ai(left_paddle, target_left) == False:
+                elif ai(left_paddle, target_left) == False:
                     left_paddle.move_down()
 
         # Paddle and ball collisions
@@ -533,15 +533,7 @@ def distance_to(rect1, rect2):
 
 
 # Compares best ball to right paddle position and returns a boolean which is evaluated for movement.
-def right_ai(paddle, ball):
-    if paddle.centery > ball.centery:
-        return True
-    else:
-        return False
-
-
-# Compares best ball to left paddle position and returns a boolean which is evaluated for movement.
-def left_ai(paddle, ball):
+def ai(paddle, ball):
     if paddle.centery > ball.centery:
         return True
     else:
