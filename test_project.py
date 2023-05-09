@@ -59,7 +59,7 @@ def test_get_filepath():
 def test_ball_direction_filter():
     ball1 = Ball(
         (Config.DISPLAY_WIDTH / 2 - (Config.BALL_WIDTH / 2)),
-        Config.DISPLAY_HEIGHT,
+        Config.DISPLAY_HEIGHT - 395,
         Config.BALL_WIDTH,
         Config.BALL_HEIGHT,
         5,
@@ -68,7 +68,7 @@ def test_ball_direction_filter():
 
     ball2 = Ball(
         (Config.DISPLAY_WIDTH / 2 - (Config.BALL_WIDTH / 2)),
-        Config.DISPLAY_HEIGHT,
+        Config.DISPLAY_HEIGHT - 395,
         Config.BALL_WIDTH,
         Config.BALL_HEIGHT,
         -5,
@@ -77,7 +77,7 @@ def test_ball_direction_filter():
 
     ball3 = Ball(
         (Config.DISPLAY_WIDTH / 2 - (Config.BALL_WIDTH / 2)),
-        Config.DISPLAY_HEIGHT,
+        Config.DISPLAY_HEIGHT - 395,
         Config.BALL_WIDTH,
         Config.BALL_HEIGHT,
         10,
@@ -102,6 +102,82 @@ def test_ball_direction_filter():
     assert ball_list_left_side != None
 
 
+def test_nearest_ball():
+    ball1 = Ball(
+        30,
+        Config.DISPLAY_HEIGHT - 395,
+        Config.BALL_WIDTH,
+        Config.BALL_HEIGHT,
+        5,
+        5,
+    )
+
+    ball2 = Ball(
+        100,
+        Config.DISPLAY_HEIGHT - 395,
+        Config.BALL_WIDTH,
+        Config.BALL_HEIGHT,
+        -5,
+        5,
+    )
+
+    ball3 = Ball(
+        150,
+        Config.DISPLAY_HEIGHT - 395,
+        Config.BALL_WIDTH,
+        Config.BALL_HEIGHT,
+        10,
+        -5,
+    )
+    
+    left_paddle = Paddle(
+        Config.PADDLE_EDGE,
+        (Config.DISPLAY_HEIGHT / 2 - (Config.PADDLE_HEIGHT / 2)),
+        Config.PADDLE_WIDTH,
+        Config.PADDLE_HEIGHT,
+        Config.paddle_dy,
+    )
+    
+    right_paddle = Paddle(
+        (Config.DISPLAY_WIDTH - (Config.PADDLE_EDGE + Config.PADDLE_WIDTH)),
+        (Config.DISPLAY_HEIGHT / 2 - (Config.PADDLE_HEIGHT / 2)),
+        Config.PADDLE_WIDTH,
+        Config.PADDLE_HEIGHT,
+        Config.paddle_dy,
+    )  
+     
+    assert nearest_ball(left_paddle, [ball1, ball2, ball3]) == ball1
+    assert nearest_ball(left_paddle, [ball1, ball2, ball3]) != ball3
+    assert nearest_ball(right_paddle, [ball1, ball2, ball3]) == ball3
+    assert nearest_ball(right_paddle, [ball1, ball2, ball3]) != ball2
+    
+    
+def test_distance_to():
+    ball = Ball(
+        30, #centerx =
+        45, #centery = 
+        Config.BALL_WIDTH,
+        Config.BALL_HEIGHT,
+        5,
+        5,
+    )
+
+    left_paddle = Paddle(
+        10, #centerx =
+        560, #centery =
+        Config.PADDLE_WIDTH,
+        Config.PADDLE_HEIGHT,
+        Config.paddle_dy,
+    )  
+    
+    ball_centerx = 35
+    ball_centery = 50
+    paddle_centerx = 12
+    paddle_centery = 600
+    assert(round(distance_to(ball, left_paddle))) == 550
+    assert(round(distance_to(left_paddle, ball))) == 550
+    assert(round(distance_to(ball, left_paddle))) != 0
+    
 # def test_init_configs(monkeypatch):
 #     config = Config.party_mode = False
 #     monkeypatch.setattr("builtins.input", lambda _: "party")
