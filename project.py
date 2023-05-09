@@ -532,7 +532,7 @@ def distance_to(rect1, rect2):
     return distance
 
 
-# Compares best ball to right paddle position and returns a boolean which is evaluated for movement.
+# Compares ball to paddle position and returns a boolean which is evaluated for movement.
 def ai(paddle, ball):
     if paddle.centery > ball.centery:
         return True
