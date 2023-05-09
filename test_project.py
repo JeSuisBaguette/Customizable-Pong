@@ -13,6 +13,17 @@ from project import (
 )
 
 
+Config.BALL_HEIGHT = 10
+Config.BALL_WIDTH = 10
+Config.PADDLE_WIDTH = 5
+Config.PADDLE_HEIGHT = 80
+Config.DISPLAY_HEIGHT = 800
+Config.DISPLAY_WIDTH = 1200
+Config.paddle_dy = 5
+Config.ball_dx = 5
+Config.ball_dy = 5
+
+
 def test_instruction():
     assert instruction() == (
         "Press W/S to move the left-paddle up/down.\
@@ -35,7 +46,7 @@ def test_validate():
     assert validate(paddle_speed="15") == True
     assert validate(paddle_speed="-3") == False
     assert validate(end_score="94") == True
-    assert validate(end_score="-1") == False
+    assert validate(end_score="0@") == False
 
 
 def test_get_filepath():
@@ -46,16 +57,6 @@ def test_get_filepath():
 
 
 def test_ball_direction_filter():
-    Config.BALL_HEIGHT = 10
-    Config.BALL_WIDTH = 10
-    Config.PADDLE_WIDTH = 5
-    Config.PADDLE_HEIGHT = 80
-    Config.DISPLAY_HEIGHT = 800
-    Config.DISPLAY_WIDTH = 1200
-    Config.paddle_dy = 5
-    # Config.ball_dx = 5
-    # Config.ball_dy = 5
-
     ball1 = Ball(
         (Config.DISPLAY_WIDTH / 2 - (Config.BALL_WIDTH / 2)),
         Config.DISPLAY_HEIGHT,
