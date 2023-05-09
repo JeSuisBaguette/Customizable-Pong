@@ -1,5 +1,7 @@
 import pytest
+# Classes
 from project import Config, Ball, Paddle
+# Functions
 from project import (
     instruction,
     validate,
@@ -10,6 +12,7 @@ from project import (
     distance_to,
     right_ai,
     left_ai,
+    collision
 )
 
 
