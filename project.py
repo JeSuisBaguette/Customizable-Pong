@@ -38,7 +38,6 @@ class Ball(pygame.Rect):
     def __init__(self, x_coord, y_coord, width, height, x_speed, y_speed):
         self.start_x = x_coord
         self.start_y = y_coord
-        # Directionality of the balls(s) will be randomized across both x and y axis on start for unpredictability.
         self.x_speed = x_speed #* random.choice((1, -1))
         self.y_speed = y_speed #* random.choice((1, -1))
         # Inheriting from rect class in order to use in-built collision functionality.
@@ -182,6 +181,7 @@ def main():
                 random.randint(30, Config.DISPLAY_HEIGHT - 30),
                 Config.BALL_WIDTH,
                 Config.BALL_HEIGHT,
+                # Directionality of the balls(s) will be randomized across both x and y axis on start for unpredictability.
                 config.ball_dx * random.choice((1, -1)),
                 config.ball_dy * random.choice((1, -1)),
             )
