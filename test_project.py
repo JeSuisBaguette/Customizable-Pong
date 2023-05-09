@@ -1,5 +1,16 @@
 import pytest
-from project import instruction, validate
+from project import Config, Ball, Paddle
+from project import (
+    instruction,
+    validate,
+    get_filepath,
+    init_configs,
+    ball_direction_filter,
+    nearest_ball,
+    distance_to,
+    right_ai,
+    left_ai,
+)
 
 
 def test_instruction():
@@ -25,3 +36,74 @@ def test_validate():
     assert validate(paddle_speed="-3") == False
     assert validate(end_score="94") == True
     assert validate(end_score="-1") == False
+
+
+def test_get_filepath():
+    directory = r"C:\Users\fedwa\pythonprojects\cs50p\final_project"
+    assert get_filepath("fonts/Arimo.ttf") == f"{directory}\\fonts/Arimo.ttf"
+    assert get_filepath("music/collect.ogg") == f"{directory}\\music/collect.ogg"
+    assert get_filepath("music/pong.ogg") != f"{directory}\\music/collect.ogg"
+
+
+def test_ball_direction_filter():
+    Config.BALL_HEIGHT = 10
+    Config.BALL_WIDTH = 10
+    Config.PADDLE_WIDTH = 5
+    Config.PADDLE_HEIGHT = 80
+    Config.DISPLAY_HEIGHT = 800
+    Config.DISPLAY_WIDTH = 1200
+    Config.paddle_dy = 5
+    # Config.ball_dx = 5
+    # Config.ball_dy = 5
+
+    ball1 = Ball(
+        (Config.DISPLAY_WIDTH / 2 - (Config.BALL_WIDTH / 2)),
+        Config.DISPLAY_HEIGHT,
+        Config.BALL_WIDTH,
+        Config.BALL_HEIGHT,
+        5,
+        5,
+    )
+
+    ball2 = Ball(
+        (Config.DISPLAY_WIDTH / 2 - (Config.BALL_WIDTH / 2)),
+        Config.DISPLAY_HEIGHT,
+        Config.BALL_WIDTH,
+        Config.BALL_HEIGHT,
+        -5,
+        5,
+    )
+
+    ball3 = Ball(
+        (Config.DISPLAY_WIDTH / 2 - (Config.BALL_WIDTH / 2)),
+        Config.DISPLAY_HEIGHT,
+        Config.BALL_WIDTH,
+        Config.BALL_HEIGHT,
+        10,
+        -5,
+    )
+
+    left_paddle = Paddle(
+        Config.PADDLE_EDGE,
+        (Config.DISPLAY_HEIGHT / 2 - (Config.PADDLE_HEIGHT / 2)),
+        Config.PADDLE_WIDTH,
+        Config.PADDLE_HEIGHT,
+        Config.paddle_dy,
+    )
+
+    ball_list_right_side = ball_direction_filter([ball1, ball2, ball3], right_side=True)
+    assert ball_list_right_side == [ball1, ball2]
+    assert ball_list_right_side != [ball1, ball2, ball3]
+    assert ball_list_right_side != None
+
+    ball_list_left_side = ball_direction_filter([ball1, ball2, ball3], left_side=True)
+    assert ball_list_left_side == [ball2]
+    assert ball_list_left_side != None
+
+
+# def test_init_configs(monkeypatch):
+#     config = Config.party_mode = False
+#     monkeypatch.setattr("builtins.input", lambda _: "party")
+#     # i = input()
+#     # assert i == "party"
+#     assert init_configs() == config
