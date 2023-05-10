@@ -38,8 +38,8 @@ class Ball(pygame.Rect):
     def __init__(self, x_coord, y_coord, width, height, x_speed, y_speed):
         self.start_x = x_coord
         self.start_y = y_coord
-        self.x_speed = x_speed #* random.choice((1, -1))
-        self.y_speed = y_speed #* random.choice((1, -1))
+        self.x_speed = x_speed 
+        self.y_speed = y_speed 
         # Inheriting from rect class in order to use in-built collision functionality.
         super().__init__(x_coord, y_coord, width, height)
 
