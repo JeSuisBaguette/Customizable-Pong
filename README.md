@@ -40,7 +40,7 @@ Contains the pip-installable libraries and their respective versions used in the
 
 ## **Documentation**
 
-### **Classes:**
+### **Classes and methods:**
 This program has three classes. These are a Paddle class, a Ball class, and a Config class. Among these, the Paddle class and Ball class are responsible for object instantiation for their respective objects while the Config class houses static variables called by the Paddle and Ball classes as well as other functions. 
 
 As such, the Config class has constants such as the display height and width, the ball height and width, the paddle heigh and width, and so on. To appropriately customize parameters of the game, this class is instantiated, and based on user input and validation, the individual variables of the instantiated object is then manipulated. Consequently, while the Config class constants are used for all non-customizable parameters by accessing Config directly, the customizable variables are accessed by other classes and functions through the instantiation of a Config object, whereby a new value is assigned to that object variable. This approach was chosen so as to prevent the user from being able to directly access and reassign the values of the Config class while setting up the paramenters. The use of the class also allows for the negation of global variable usage which had previously proven to be incredibly disadvantegous to the use of the Paddle and Ball classes which had to access the global variables to instantiate. Overall, the purpose of the Config class in this program is to hold all variables and constants related to the functioning of the game such that these crucial aspects need not be defined within a function or class method individually. Doing this allows for further modification of the code beyond the designated customizable variables and ensures that a change in value within the Config class is sufficient to reflect that change in all other aspects of the program which use it. Personally, the use of this Config class and the lack of any hard-coded values within the other classes and functions has been a huge help in both experimenting with new configurations for the game, and as well as in debugging. 
@@ -50,4 +50,28 @@ The Paddle class is used to instantiate both the right and left paddle objects i
 Similarly, the Ball class, which also inherits from the rect module, is used to instantiate ball objects within the game. Accordingly, the class also has a draw method which instructs pygame to draw the objects onto the game window, as well as a move() method. THis method contains the logic behind ball-wall collisions, which checks the y-coordinates of the balls and reverses their y-axis speed should the ball 'hit' the top or bottom of the game window. Similarly, this method also houses the logic for ball resetting should the ball go past the paddles on either side. If this happens, the ball is reset to the middle of the game window along the x-axis, and it's respawn location is randomized along the y-axis of this x-coordinate. Additionally, both the x-axis speed and the y-axis speed is also randomized using the random module upon ball respawn. Lastly, within the move method, when the conditions for the ball-wall collisions is true, or the conditions for the ball having moved past the respective paddle is true, the appropriate sound is played.   
 
 ### **Functions:**
+A brief explanation of each of the functions used in the program, excluding main(), is provided below:
+
+**get_color():** Returns a color from a list using the random module. 
+
+**init_configs():** Function called at the beginning of the program for user input at the terminal. Instantiates Config class and returns user defined parameters.
+
+**instructions():** Returns strings of text to do with control scheme, game parameters, and customizability.
+
+**validate():** Performs user validation on customizable game options and returns a boolean based on whether the input is valid or not.
+
+**setup():** Initializes pygame, sets up the game window, game clock, and caption.
+
+**get_filepath():** Returns an absolute filepath based on the current directory and the passed in filepath of assets used in the game.
+
+**ball_direction_filter():** Filters direction of the balls moving towards the right or left paddle (set on function call) and appends them to a list which is then returned. 
+
+**nearest_ball():** From a list of balls, returns the ball that is closest to the paddle (set on function call).
+
+**distance_to():** Calculates the distance from the center of the paddle to the center of the ball, which is then returned as a float.
+
+**ai():** Compares ball to paddle position along the y-axis and returns a boolean which is evaluated for movement.
+
+**collision():** Uses pygame's rect class and it's inbuilt class method of colliderect. Checks if two rectangles overlap. Returns a boolean based on whether there is a overlap (collision) between the two objects.  
+
 ### **Main game loop: explain terminal**
