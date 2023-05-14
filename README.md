@@ -1,4 +1,4 @@
-# **Pong+**
+# **King Pong**
 
 ### **Created by:**
 JeSuisBaguette
