@@ -486,7 +486,7 @@ def setup():
         (Config.DISPLAY_WIDTH, Config.DISPLAY_HEIGHT)
     )
     Config.clock = pygame.time.Clock()
-    pygame.display.set_caption("Pong+")
+    pygame.display.set_caption("King Pong")
     Config.running = True
 
 
