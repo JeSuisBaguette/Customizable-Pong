@@ -36,8 +36,8 @@ Additional Features:
         BROWN
 
 AI breakdown:
-    A list of balls headed towards the respective paddle is created.
-    Using this list, the distance from the center of the balls to the center of the paddle is calculated. 
-    The ball with the closest distance to the paddle is returned for comparison.
-    Comparison between the paddle center and the ball center is evaluated for y-coordinates. A boolean is returned.
-    Depending on the boolean, the paddle is moved up or down to align it's center to the ball's center.
+        A list of balls headed towards the respective paddle is created.
+        Using this list, the distance from the center of the balls to the center of the paddle is calculated. 
+        The ball with the closest distance to the paddle is returned for comparison.
+        Comparison between the paddle center and the ball center is evaluated for y-coordinates. A boolean is returned.
+        Depending on the boolean, the paddle is moved up or down to align it's center to the ball's center.
