@@ -1,10 +1,7 @@
 # **Pong+**
 
 ### **Created by:**
-Ferdinand Edward Bitan
-
-### **Video demo:**
-https://youtu.be/70vSP2OQqUU
+JeSuisBaguette
 
 ## **Introduction**
 
